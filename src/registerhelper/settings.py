@@ -14,10 +14,10 @@ class Settings(BaseSettings):
     RH_DATABASE_URL=postgresql+psycopg://user:pass@host/db   # server
     """
 
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="RH_")
+    model_config = SettingsConfigDict(env_file=PROJECT_ROOT / ".env", env_prefix="RH_")
 
-    database_url: str = "sqlite:///data/registerhelper.db"
-    data_dir: str = "data"
+    database_url: str = f"sqlite:///{DATA_DIR / 'registerhelper.db'}"
+    data_dir: str = DATA_DIR
 
 
 settings = Settings()

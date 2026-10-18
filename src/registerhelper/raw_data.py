@@ -7,7 +7,7 @@ from registerhelper.settings import settings
 
 
 def _path(school: str, term: str) -> Path:
-    return settings.data_dir / "raw" / school / f"{term}.json"
+    return Path(settings.data_dir) / "raw" / school / f"{term}.json"
 
 
 def save_raw(school: str, term: str, sections: list[RawSection]) -> Path:
