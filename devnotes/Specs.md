@@ -111,6 +111,33 @@ Later, each as its own package when its stage starts: `enrichers/`, `resolution/
 - **Raw snapshots:** JSON files, the source of truth.
 - **DB:** SQLAlchemy 2.0, portable types only (SQLite locally, Postgres on a server with the same code). Tables carry a `school` column. Normalized data is rebuildable from snapshots; user-created data (instructor match overrides, etc.) is what migrations protect. Alembic is the only thing that changes the schema, never `create_all()`.
 
+## Requirements and degree audit (later)
+
+- **Individual progress:** comes from the student's DegreeWorks audit or transcript, pasted manually. A programmatic fetch needs the student's session cookie, so it runs locally only, like the registration executor.
+- **General program requirements:** come from the school's public catalog, not DegreeWorks.
+- **Prereqs and coreqs:** Banner's per-section endpoints, fetched only for the courses being scheduled (one request per section). They tie labs to lectures at schools without section linking (GSU).
+- **Choices** ("2 of these 5 electives"): the engine lists the options; the user picks.
+- Until this stage exists, the solver takes a course list from the user.
+
+## Instructor resolution (later)
+
+An instructor appears under different names in each source ("La Corte, Julie" in Banner, a preferred name on RMP, "J. LaCorte" in grade data).
+
+1. **Deterministic match first:** normalized name, then last name + first initial + department + school.
+2. **LLM for the ambiguous remainder only**, with context (department, courses taught). Output: a match and a confidence.
+3. **Every decision is stored** as a match row the user can override (user-created data, protected by migrations). Each pair is decided once; later runs read the stored row, so matching is reproducible.
+
+## Preference compiler (later)
+
+Free-form input, typed output, frozen after user confirmation.
+
+1. **Typed constraints (pydantic):** time windows, days off, prefer/avoid instructor, campus, modality, max gap between classes, credit range, compactness.
+2. **One escape hatch:** a filter on known section fields (`location contains "Langdale"`). Validated like the others, never arbitrary code.
+3. **Hard or soft:** each constraint is hard, or soft with a weight. The user can change either before confirming.
+4. **No approximations:** a request the types can't express is reported as such. Taste ("a chill professor") goes to the rerank stage as a soft criterion.
+5. **Compile once, freeze:** text → constraints is the only nondeterministic step. Its confirmed output is stored, and the solver always reads the stored version, so the same confirmed preferences always give the same schedules. Changing the wording triggers a recompile.
+6. **Eval set:** phrases with their expected constraints, run whenever the prompt or model changes.
+
 ## Stack
 
 | Layer | Choice |
