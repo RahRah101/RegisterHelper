@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=PROJECT_ROOT / ".env", env_prefix="RH_")
 
     database_url: str = f"sqlite:///{DATA_DIR / 'registerhelper.db'}"
-    data_dir: str = DATA_DIR
+    data_dir: Path = DATA_DIR
 
 
 settings = Settings()
