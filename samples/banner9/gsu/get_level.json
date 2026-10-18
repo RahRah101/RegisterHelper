@@ -1,0 +1,18 @@
+[
+  {
+    "code": "GS",
+    "description": "Graduate Semester"
+  },
+  {
+    "code": "LW",
+    "description": "Law Semester"
+  },
+  {
+    "code": "UA",
+    "description": "Undergrad Associate Semester"
+  },
+  {
+    "code": "US",
+    "description": "Undergraduate Semester"
+  }
+]

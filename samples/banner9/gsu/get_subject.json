@@ -1,0 +1,690 @@
+[
+  {
+    "code": "ACCT",
+    "description": "ACCOUNTING"
+  },
+  {
+    "code": "ACT",
+    "description": "ACTING"
+  },
+  {
+    "code": "AS",
+    "description": "ACTUARIAL SCIENCE"
+  },
+  {
+    "code": "AAS",
+    "description": "AFRICANA STUDIES"
+  },
+  {
+    "code": "ASL",
+    "description": "AMERICAN SIGN LANGUAGE"
+  },
+  {
+    "code": "MSA",
+    "description": "ANALYTICS"
+  },
+  {
+    "code": "ANTH",
+    "description": "ANTHROPOLOGY"
+  },
+  {
+    "code": "APDB",
+    "description": "APPLIED BASS"
+  },
+  {
+    "code": "APBS",
+    "description": "APPLIED BASSOON"
+  },
+  {
+    "code": "ABA",
+    "description": "APPLIED BEHAVIORAL ANALYSIS"
+  },
+  {
+    "code": "APCE",
+    "description": "APPLIED CELLO"
+  },
+  {
+    "code": "APCL",
+    "description": "APPLIED CLARINET"
+  },
+  {
+    "code": "APCP",
+    "description": "APPLIED COMPOSITION"
+  },
+  {
+    "code": "APCD",
+    "description": "APPLIED CONDUCTING"
+  },
+  {
+    "code": "APEU",
+    "description": "APPLIED EUPHONIUM"
+  },
+  {
+    "code": "APFL",
+    "description": "APPLIED FLUTE"
+  },
+  {
+    "code": "APGT",
+    "description": "APPLIED GUITAR"
+  },
+  {
+    "code": "APHN",
+    "description": "APPLIED HORN"
+  },
+  {
+    "code": "APJB",
+    "description": "APPLIED JAZZ BASS"
+  },
+  {
+    "code": "APJG",
+    "description": "APPLIED JAZZ GUITAR"
+  },
+  {
+    "code": "APJS",
+    "description": "APPLIED JAZZ SAXOPHONE"
+  },
+  {
+    "code": "AL",
+    "description": "APPLIED LINGUISTICS"
+  },
+  {
+    "code": "APOB",
+    "description": "APPLIED OBOE"
+  },
+  {
+    "code": "APPR",
+    "description": "APPLIED PERCUSSION"
+  },
+  {
+    "code": "APPF",
+    "description": "APPLIED PIANO"
+  },
+  {
+    "code": "APJP",
+    "description": "APPLIED PIANO JAZZ PIANO"
+  },
+  {
+    "code": "APSX",
+    "description": "APPLIED SAXOPHONE"
+  },
+  {
+    "code": "APTB",
+    "description": "APPLIED TROMBONE"
+  },
+  {
+    "code": "APTP",
+    "description": "APPLIED TRUMPET"
+  },
+  {
+    "code": "APTU",
+    "description": "APPLIED TUBA"
+  },
+  {
+    "code": "APVA",
+    "description": "APPLIED VIOLA"
+  },
+  {
+    "code": "APVL",
+    "description": "APPLIED VIOLIN"
+  },
+  {
+    "code": "APVC",
+    "description": "APPLIED VOICE"
+  },
+  {
+    "code": "ARBC",
+    "description": "ARABIC"
+  },
+  {
+    "code": "ART",
+    "description": "ART"
+  },
+  {
+    "code": "AE",
+    "description": "ART EDUCATION"
+  },
+  {
+    "code": "AH",
+    "description": "ART HISTORY"
+  },
+  {
+    "code": "ARTA",
+    "description": "ARTS ADMINISTRATION"
+  },
+  {
+    "code": "ASTR",
+    "description": "ASTRONOMY"
+  },
+  {
+    "code": "BIOL",
+    "description": "BIOLOGY"
+  },
+  {
+    "code": "BMSC",
+    "description": "BIOMEDICAL SCIENCE"
+  },
+  {
+    "code": "BRFV",
+    "description": "BIRTH THROUGH FIVE"
+  },
+  {
+    "code": "BA",
+    "description": "BUSINESS ADMINISTRATION--BA"
+  },
+  {
+    "code": "BUSA",
+    "description": "BUSINESS ADMINISTRATION--BUSA"
+  },
+  {
+    "code": "BCOM",
+    "description": "BUSINESS COMMUNICATION"
+  },
+  {
+    "code": "CPI",
+    "description": "CENTER PROCESS INNOVATION"
+  },
+  {
+    "code": "CER",
+    "description": "CERAMICS"
+  },
+  {
+    "code": "CHEM",
+    "description": "CHEMISTRY"
+  },
+  {
+    "code": "CHIN",
+    "description": "CHINESE"
+  },
+  {
+    "code": "CNHP",
+    "description": "CLG OF NURSING &amp; HEALTH PROF."
+  },
+  {
+    "code": "COMM",
+    "description": "COMMUNICATION"
+  },
+  {
+    "code": "CSD",
+    "description": "COMMUNICATION SCI &amp; DISORDERS"
+  },
+  {
+    "code": "CIS",
+    "description": "COMPUTER INFORMATION SYSTEMS"
+  },
+  {
+    "code": "CSC",
+    "description": "COMPUTER SCIENCE"
+  },
+  {
+    "code": "COOP",
+    "description": "COOPERATIVE EDUCATION"
+  },
+  {
+    "code": "CPS",
+    "description": "COUNSELING &amp; PSYCH SERVICES"
+  },
+  {
+    "code": "CMIS",
+    "description": "CREATIVE MEDIA INDUSTRY STUDY"
+  },
+  {
+    "code": "CRJU",
+    "description": "CRIMINAL JUSTICE"
+  },
+  {
+    "code": "EDCI",
+    "description": "CURRICULUM &amp; INSTRUCTION"
+  },
+  {
+    "code": "DATA",
+    "description": "DATA FOUNDATIONS"
+  },
+  {
+    "code": "DSCI",
+    "description": "DATA SCIENCE"
+  },
+  {
+    "code": "DFST",
+    "description": "DEAF STUDIES"
+  },
+  {
+    "code": "DHYG",
+    "description": "DENTAL HYGIENE"
+  },
+  {
+    "code": "DBA",
+    "description": "DOCTORATE BUSINESS ADMIN"
+  },
+  {
+    "code": "DP",
+    "description": "DRAWING AND PAINTING"
+  },
+  {
+    "code": "DPP",
+    "description": "DRAWING, PAINTING, PRINTMAKING"
+  },
+  {
+    "code": "ECE",
+    "description": "EARLY CHILDHOOD EDUCATION"
+  },
+  {
+    "code": "ECON",
+    "description": "ECONOMICS"
+  },
+  {
+    "code": "EDUC",
+    "description": "EDUCATION"
+  },
+  {
+    "code": "EPS",
+    "description": "EDUCATIONAL POLICY STUDIES"
+  },
+  {
+    "code": "EPY",
+    "description": "EDUCATIONAL PSYCHOLOGY"
+  },
+  {
+    "code": "ENGR",
+    "description": "ENGINEERING"
+  },
+  {
+    "code": "ENGL",
+    "description": "ENGLISH"
+  },
+  {
+    "code": "ESL",
+    "description": "ENGLISH SECOND LANGUAGE (GRAD)"
+  },
+  {
+    "code": "ENI",
+    "description": "ENTREPRENEURSHIP"
+  },
+  {
+    "code": "ENVS",
+    "description": "ENVIRONMENTAL STUDIES"
+  },
+  {
+    "code": "EPEL",
+    "description": "EPS/EDUCATIONAL LEADERSHIP"
+  },
+  {
+    "code": "EPHE",
+    "description": "EPS/HIGHER EDUCATION"
+  },
+  {
+    "code": "EPRS",
+    "description": "EPS/RESEARCH"
+  },
+  {
+    "code": "EPSF",
+    "description": "EPS/SOCIAL FOUNDATIONS"
+  },
+  {
+    "code": "EURO",
+    "description": "EUROPEAN UNION STUDIES"
+  },
+  {
+    "code": "EXC",
+    "description": "EXCEPTIONAL CHILDREN"
+  },
+  {
+    "code": "EMBA",
+    "description": "EXECUTIVE MBA"
+  },
+  {
+    "code": "FLME",
+    "description": "FILM AND MEDIA"
+  },
+  {
+    "code": "FTA",
+    "description": "FIN-TECH ACADEMY"
+  },
+  {
+    "code": "FI",
+    "description": "FINANCE"
+  },
+  {
+    "code": "FOLK",
+    "description": "FOLKLORE"
+  },
+  {
+    "code": "FORL",
+    "description": "FOREIGN LANGUAGE"
+  },
+  {
+    "code": "FREN",
+    "description": "FRENCH"
+  },
+  {
+    "code": "GEOG",
+    "description": "GEOGRAPHY"
+  },
+  {
+    "code": "GEOL",
+    "description": "GEOLOGY"
+  },
+  {
+    "code": "GFA",
+    "description": "GEORGIA FILM ACADEMY"
+  },
+  {
+    "code": "GEOS",
+    "description": "GEOSCIENCES"
+  },
+  {
+    "code": "GRMN",
+    "description": "GERMAN"
+  },
+  {
+    "code": "GERO",
+    "description": "GERONTOLOGY"
+  },
+  {
+    "code": "GLOS",
+    "description": "GLOBAL STUDIES"
+  },
+  {
+    "code": "GRAD",
+    "description": "GRADUATE SPECIAL TOPICS COURSE"
+  },
+  {
+    "code": "GRD",
+    "description": "GRAPHIC DESIGN"
+  },
+  {
+    "code": "HA",
+    "description": "HEALTH ADMINISTRATION"
+  },
+  {
+    "code": "HI",
+    "description": "HEALTH INFORMATICS"
+  },
+  {
+    "code": "HS",
+    "description": "HEALTH SCIENCES"
+  },
+  {
+    "code": "HIST",
+    "description": "HISTORY"
+  },
+  {
+    "code": "HSEM",
+    "description": "HOMELAND SECURITY &amp; EMERG MGMT"
+  },
+  {
+    "code": "HON",
+    "description": "HONORS"
+  },
+  {
+    "code": "HADM",
+    "description": "HOSPITALITY ADMINISTRATION"
+  },
+  {
+    "code": "HUMN",
+    "description": "HUMANITIES"
+  },
+  {
+    "code": "ITEC",
+    "description": "INFORMATION TECHNOLOGY"
+  },
+  {
+    "code": "IFI",
+    "description": "INSTITUTE FOR INSIGHT"
+  },
+  {
+    "code": "ISCI",
+    "description": "INTEGRATED SCIENCES"
+  },
+  {
+    "code": "IEP",
+    "description": "INTENSIVE ENGLISH PROGRAM"
+  },
+  {
+    "code": "INDS",
+    "description": "INTERDISCIPLINARY STUDIES"
+  },
+  {
+    "code": "ID",
+    "description": "INTERIOR DESIGN"
+  },
+  {
+    "code": "IB",
+    "description": "INTERNATIONAL BUSINESS"
+  },
+  {
+    "code": "INEX",
+    "description": "INTERNATIONAL EXCHANGE"
+  },
+  {
+    "code": "JAPN",
+    "description": "JAPANESE"
+  },
+  {
+    "code": "JOUR",
+    "description": "JOURNALISM"
+  },
+  {
+    "code": "KH",
+    "description": "KINESIOLOGY &amp; HEALTH"
+  },
+  {
+    "code": "KORE",
+    "description": "KOREAN"
+  },
+  {
+    "code": "EDLA",
+    "description": "LANGUAGE ARTS EDUCATION"
+  },
+  {
+    "code": "LAW",
+    "description": "LAW"
+  },
+  {
+    "code": "LT",
+    "description": "LEARNING TECHNOLOGIES"
+  },
+  {
+    "code": "LGLS",
+    "description": "LEGAL STUDIES"
+  },
+  {
+    "code": "MGT",
+    "description": "MANAGEMENT"
+  },
+  {
+    "code": "MK",
+    "description": "MARKETING"
+  },
+  {
+    "code": "MBA",
+    "description": "MASTER OF BUSINESS ADMIN"
+  },
+  {
+    "code": "MATH",
+    "description": "MATHEMATICS"
+  },
+  {
+    "code": "EDMT",
+    "description": "MATHEMATICS EDUCATION"
+  },
+  {
+    "code": "MSL",
+    "description": "MILITARY SCIENCE LEADERSHIP"
+  },
+  {
+    "code": "MUS",
+    "description": "MUSIC"
+  },
+  {
+    "code": "MUA",
+    "description": "MUSIC APPRECIATION"
+  },
+  {
+    "code": "MTM",
+    "description": "MUSIC TECHNOLOGY MANAGEMENT"
+  },
+  {
+    "code": "NEUR",
+    "description": "NEUROSCIENCE"
+  },
+  {
+    "code": "NURS",
+    "description": "NURSING"
+  },
+  {
+    "code": "NUTR",
+    "description": "NUTRITION"
+  },
+  {
+    "code": "OT",
+    "description": "OCCUPATIONAL THERAPY"
+  },
+  {
+    "code": "PERS",
+    "description": "PERSPECTIVES"
+  },
+  {
+    "code": "PHIL",
+    "description": "PHILOSOPHY"
+  },
+  {
+    "code": "PHOT",
+    "description": "PHOTOGRAPHY"
+  },
+  {
+    "code": "PT",
+    "description": "PHYSICAL THERAPY"
+  },
+  {
+    "code": "PHYS",
+    "description": "PHYSICS"
+  },
+  {
+    "code": "POLS",
+    "description": "POLITICAL SCIENCE"
+  },
+  {
+    "code": "PRT",
+    "description": "PRINTMAKING"
+  },
+  {
+    "code": "PRLB",
+    "description": "PROJECT LAB"
+  },
+  {
+    "code": "PSYC",
+    "description": "PSYCHOLOGY"
+  },
+  {
+    "code": "PHPB",
+    "description": "PUBLIC HLTH. POLICY &amp; BEHAVIOR"
+  },
+  {
+    "code": "PHPH",
+    "description": "PUBLIC HLTH. POPULATION SCI."
+  },
+  {
+    "code": "PMAP",
+    "description": "PUBLIC MANAGEMENT &amp; POLICY"
+  },
+  {
+    "code": "QRAM",
+    "description": "QUANT RISK ANALYSIS AND MGMT."
+  },
+  {
+    "code": "EDRD",
+    "description": "READING EDUCATION"
+  },
+  {
+    "code": "RE",
+    "description": "REAL ESTATE"
+  },
+  {
+    "code": "RELS",
+    "description": "RELIGIOUS STUDIES"
+  },
+  {
+    "code": "RSCH",
+    "description": "RESEARCH STRATEGIES"
+  },
+  {
+    "code": "RT",
+    "description": "RESPIRATORY THERAPY"
+  },
+  {
+    "code": "RMI",
+    "description": "RISK MANAGEMENT AND INSURANCE"
+  },
+  {
+    "code": "EDSC",
+    "description": "SCIENCE EDUCATION"
+  },
+  {
+    "code": "SCUL",
+    "description": "SCULPTURE"
+  },
+  {
+    "code": "SLIP",
+    "description": "SIGN LANGUAGE INTERPRETING"
+  },
+  {
+    "code": "EDSS",
+    "description": "SOCIAL STUDIES EDUCATION"
+  },
+  {
+    "code": "SW",
+    "description": "SOCIAL WORK"
+  },
+  {
+    "code": "SOCI",
+    "description": "SOCIOLOGY"
+  },
+  {
+    "code": "SPAN",
+    "description": "SPANISH"
+  },
+  {
+    "code": "SCOM",
+    "description": "SPEECH COMMUNICATION"
+  },
+  {
+    "code": "STAT",
+    "description": "STATISTICS"
+  },
+  {
+    "code": "STEM",
+    "description": "STEM"
+  },
+  {
+    "code": "TX",
+    "description": "TAXATION"
+  },
+  {
+    "code": "TSLE",
+    "description": "TEACHING ESL/COLLEGE OF ED"
+  },
+  {
+    "code": "TEXT",
+    "description": "TEXTILES"
+  },
+  {
+    "code": "THEA",
+    "description": "THEATRE"
+  },
+  {
+    "code": "3DS",
+    "description": "THREE-DIMENSIONAL STUDIES"
+  },
+  {
+    "code": "URB",
+    "description": "URBAN STUDIES INSTITUTE"
+  },
+  {
+    "code": "WGSS",
+    "description": "WOMEN&#39;S GENDER &amp; SEXUALITY STU"
+  },
+  {
+    "code": "WLC",
+    "description": "WORLD LANGUAGES &amp; CULTURES"
+  }
+]

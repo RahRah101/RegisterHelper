@@ -1,0 +1,98 @@
+[
+  {
+    "code": "SEPA",
+    "description": "Arts Signature Experience"
+  },
+  {
+    "code": "LONL",
+    "description": "Asynchronous Online Instruct"
+  },
+  {
+    "code": "SCHC",
+    "description": "City Scholar"
+  },
+  {
+    "code": "SEPC",
+    "description": "City Signature Experience"
+  },
+  {
+    "code": "CTW",
+    "description": "Critical Thinking Thru Writing"
+  },
+  {
+    "code": "EPIC",
+    "description": "EPIC Interdisciplinary Program"
+  },
+  {
+    "code": "LF2F",
+    "description": "Face to Face - Instruction"
+  },
+  {
+    "code": "BNCH",
+    "description": "FLC Bench Course"
+  },
+  {
+    "code": "SCHG",
+    "description": "Global Scholar"
+  },
+  {
+    "code": "SEPG",
+    "description": "Global Signature Experience"
+  },
+  {
+    "code": "HC",
+    "description": "Honors College"
+  },
+  {
+    "code": "HYB",
+    "description": "Hybrid/Partially Online"
+  },
+  {
+    "code": "ZLCM",
+    "description": "Low-cost:$40 or under req cost"
+  },
+  {
+    "code": "ZNCM",
+    "description": "No-cost $0 required costs"
+  },
+  {
+    "code": "NFLC",
+    "description": "Non-Freshman Learning Comm"
+  },
+  {
+    "code": "PBOK",
+    "description": "Panther Books Program"
+  },
+  {
+    "code": "PGP",
+    "description": "Panther Gateway Course"
+  },
+  {
+    "code": "PCGS",
+    "description": "PC Global Scholar"
+  },
+  {
+    "code": "SEPP",
+    "description": "Professional Signature Exp"
+  },
+  {
+    "code": "SEPR",
+    "description": "Research Signature Experience"
+  },
+  {
+    "code": "SEPS",
+    "description": "Service Signature Experience"
+  },
+  {
+    "code": "SONL",
+    "description": "Synchronous Online"
+  },
+  {
+    "code": "ZIVE",
+    "description": "Virtual Exchange Course"
+  },
+  {
+    "code": "WMLD",
+    "description": "WomenLead Program"
+  }
+]

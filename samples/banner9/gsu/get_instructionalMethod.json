@@ -1,0 +1,14 @@
+[
+  {
+    "code": "E",
+    "description": "*Entirely at a Distance"
+  },
+  {
+    "code": "F",
+    "description": "Fully Distance 95% tech"
+  },
+  {
+    "code": "H",
+    "description": "Hybrid 50% or less tech"
+  }
+]

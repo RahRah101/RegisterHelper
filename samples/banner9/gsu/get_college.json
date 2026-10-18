@@ -1,0 +1,50 @@
+[
+  {
+    "code": "PS",
+    "description": "A. Young School Policy Studies"
+  },
+  {
+    "code": "NS",
+    "description": "Col of Nursing &amp; Health Prof."
+  },
+  {
+    "code": "AS",
+    "description": "College of Arts &amp; Sciences"
+  },
+  {
+    "code": "LW",
+    "description": "College of Law"
+  },
+  {
+    "code": "AR",
+    "description": "College of the Arts"
+  },
+  {
+    "code": "EH",
+    "description": "Education &amp; Human Development"
+  },
+  {
+    "code": "HC",
+    "description": "Honors College"
+  },
+  {
+    "code": "BI",
+    "description": "Inst. for Biomedical Sciences"
+  },
+  {
+    "code": "PH",
+    "description": "Institute of Public Health"
+  },
+  {
+    "code": "PC",
+    "description": "Perimeter College"
+  },
+  {
+    "code": "BU",
+    "description": "Robinson College of Business"
+  },
+  {
+    "code": "00",
+    "description": "University College"
+  }
+]
