@@ -3,6 +3,9 @@ from enum import StrEnum
 
 from pydantic import BaseModel, model_validator
 
+type JSON = str | int | float | bool | None | list[JSON] | dict[str, JSON]
+type RawSection = dict[str, JSON]
+
 
 class Weekday(StrEnum):
     MON = "mon"

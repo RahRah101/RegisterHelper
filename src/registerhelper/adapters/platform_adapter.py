@@ -1,10 +1,8 @@
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from typing import Any, TypeVar
+from typing import TypeVar
 
-from registerhelper.models import Section, Term
-
-type RawSection = dict[str, Any]
+from registerhelper.models import RawSection, Section, Term
 
 
 class PlatformAdapter(ABC):
