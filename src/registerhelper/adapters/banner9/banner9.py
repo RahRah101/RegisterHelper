@@ -5,6 +5,7 @@ import logging
 import random
 import re
 import string
+from collections import Counter, defaultdict
 from datetime import datetime, time
 from time import sleep
 from typing import ClassVar, override
@@ -174,17 +175,52 @@ class Banner9Adapter(PlatformAdapter):
 
     @override
     def normalize_sections(self, raw: list[RawSection]) -> list[Section]:
-        """Bad sections are logged and skipped, so one weird section can't sink a whole term."""
+        """Bad sections are logged and skipped, so one weird section can't sink a whole term.
+        Skips are logged once per reason, plus the codes self.codes doesn't map."""
         sections: list[Section] = []
+        skipped: defaultdict[str, list[str]] = defaultdict(list)  # reason -> CRNs
+        dropped_meeting_types: Counter[str] = Counter()
+        unknown_modality_methods: Counter[str] = Counter()
+        untagged_campuses: Counter[str] = Counter()
         for item in raw:
+            crn = str(item.get("courseReferenceNumber", "?"))
             try:
-                sections.append(
-                    self._parse_section(_BannerSection.model_validate(item))
-                )
-            except (ValidationError, ValueError) as e:
-                log.warning(
-                    "skipping section %s: %s", item.get("courseReferenceNumber", "?"), e
-                )
+                b = _BannerSection.model_validate(item)
+                section = self._parse_section(b)
+            except ValidationError as e:  # before ValueError, it's a subclass
+                skipped[_validation_reason(e)].append(crn)
+                continue
+            except ValueError as e:
+                skipped[str(e)].append(crn)
+                continue
+            sections.append(section)
+
+            for m in b.meetings_faculty:
+                mt = m.meeting_time.meeting_type
+                if mt is not None and mt not in self.codes.class_meeting_types:
+                    dropped_meeting_types[mt] += 1
+            if section.modality is Modality.UNKNOWN:
+                unknown_modality_methods[b.instructional_method or "(none)"] += 1
+            if (
+                section.campus not in self.codes.campus_tags
+                and section.campus not in self.codes.individualized_campuses
+            ):
+                untagged_campuses[section.campus] += 1
+
+        for reason, crns in skipped.items():
+            log.warning(
+                "skipped %d sections: %s (e.g. %s)",
+                len(crns),
+                reason,
+                ", ".join(crns[:5]),
+            )
+        _log_counts(
+            "meeting types not in class_meeting_types (dropped)", dropped_meeting_types
+        )
+        _log_counts(
+            "sections with modality UNKNOWN, by method", unknown_modality_methods
+        )
+        _log_counts("campuses without campus_tags", untagged_campuses)
         return sections
 
     # --- parsing that uses the school-specific codes in self.codes -----------
@@ -325,6 +361,23 @@ def _clean_name(name: str) -> str:
     name = re.sub(r"\s*\(.*?\)", "", name)  # drop "(preferred name)"
     name = re.sub(r"\s+\.$", "", name)  # drop trailing " ." (keeps "D.")
     return re.sub(r"\s+", " ", name).strip()
+
+
+def _validation_reason(e: ValidationError) -> str:
+    # "meetingsFaculty.0.meetingTime.startDate: missing" -> drop list indices so
+    # the same problem on different meetings groups together
+    return "; ".join(
+        ".".join(str(p) for p in err["loc"] if isinstance(p, str)) + f": {err['type']}"
+        for err in e.errors()
+    )
+
+
+def _log_counts(title: str, counts: Counter[str], limit: int = 10) -> None:
+    if not counts:
+        return
+    shown = ", ".join(f"{k} x{n}" for k, n in counts.most_common(limit))
+    more = f", +{len(counts) - limit} more" if len(counts) > limit else ""
+    log.warning("%s: %s%s", title, html.unescape(shown), more)
 
 
 # Classes representing Banner's raw shape.

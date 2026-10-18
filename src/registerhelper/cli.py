@@ -57,9 +57,18 @@ def normalize(school: str, term: Annotated[str, typer.Option("--term", "-t")]) -
     _summary(_adapter(school).normalize_sections(raw), len(raw))
 
 
+_MAX_SKIP_RATE = 0.01  # above this, normalizing "worked" but the parser is broken
+
+
 def _summary(sections: list[Section], raw_count: int) -> None:
-    typer.echo(
-        f"normalized {len(sections)} sections ({raw_count - len(sections)} skipped)"
-    )
+    skipped = raw_count - len(sections)
+    typer.echo(f"normalized {len(sections)} sections ({skipped} skipped)")
     for subject, n in Counter(s.course.subject for s in sections).most_common(10):
         typer.echo(f"  {subject}: {n}")
+    if raw_count and skipped / raw_count > _MAX_SKIP_RATE:
+        typer.echo(
+            f"error: {skipped / raw_count:.1%} of sections skipped "
+            + f"(limit {_MAX_SKIP_RATE:.0%}), see the warnings above",
+            err=True,
+        )
+        raise typer.Exit(1)
