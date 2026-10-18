@@ -47,7 +47,7 @@ class TermRow(Base):
     school: Mapped[str] = mapped_column(String(32))
     code: Mapped[str] = mapped_column(String(16))
     description: Mapped[str] = mapped_column(String(128))
-    view_only: Mapped[bool]
+    view_only: Mapped[bool] = mapped_column()
 
 
 class InstructorRow(Base):
@@ -80,10 +80,10 @@ class SectionRow(Base):
     course_number: Mapped[str] = mapped_column(String(16))
     section_number: Mapped[str] = mapped_column(String(16))
 
-    credits: Mapped[float]
+    credits: Mapped[float] = mapped_column()
     campus: Mapped[str] = mapped_column(String(128))
     modality: Mapped[str] = mapped_column(String(16))  # Modality enum value
-    seats: Mapped[int]
+    seats: Mapped[int] = mapped_column()
     link_group: Mapped[str | None] = mapped_column(String(32))
     tags: Mapped[list[str]] = mapped_column(JSON, default=list)
 
@@ -104,10 +104,10 @@ class MeetingRow(Base):
     )
 
     days: Mapped[list[str]] = mapped_column(JSON, default=list)  # Weekday values
-    start_time: Mapped[time | None]
-    end_time: Mapped[time | None]
-    start_date: Mapped[date]
-    end_date: Mapped[date]
+    start_time: Mapped[time | None] = mapped_column()
+    end_time: Mapped[time | None] = mapped_column()
+    start_date: Mapped[date] = mapped_column()
+    end_date: Mapped[date] = mapped_column()
     location: Mapped[str | None] = mapped_column(String(256))
 
     section: Mapped[SectionRow] = relationship(back_populates="meetings")
