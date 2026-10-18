@@ -1,6 +1,6 @@
 """Georgia State University: Banner 9 plus GSU's own codes."""
 
-from registerhelper.adapters.banner9 import Banner9Adapter, BannerCodes
+from registerhelper.adapters.banner9.banner9 import Banner9Adapter, BannerCodes
 from registerhelper.adapters.platform_adapter import register_platform
 from registerhelper.models import Modality
 

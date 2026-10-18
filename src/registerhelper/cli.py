@@ -4,7 +4,7 @@ from typing import Annotated
 
 import typer
 
-import registerhelper.adapters  # noqa: F401  (importing registers the built-in adapters)
+from registerhelper.adapters import load_plugins
 from registerhelper.adapters.platform_adapter import PlatformAdapter, get_platform
 from registerhelper.config import load_school
 from registerhelper.models import Section
@@ -28,6 +28,7 @@ def main(
         level=logging.INFO if verbose else logging.WARNING,
         format="%(levelname)s %(message)s",
     )
+    load_plugins()
 
 
 @app.command()

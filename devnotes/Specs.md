@@ -74,10 +74,12 @@ RegisterHelper/
     ├── models.py                # canonical models: Term, Section, Meeting, ...
     ├── raw_data.py              # save_raw / load_raw
     ├── adapters/
-    │   ├── __init__.py          # imports the built-in adapters so they register
+    │   ├── __init__.py          # load_plugins(): imports the built-in adapters + installed plugins so they register
     │   ├── platform_adapter.py  # PlatformAdapter ABC + @register_platform
-    │   ├── banner9.py           # Banner 9: everything Banner-wide
-    │   └── gsu.py               # GSU: Banner 9 + GSU's own codes
+    │   └── banner9/
+    │       ├── banner9.py       # Banner 9: everything Banner-wide
+    │       ├── gsu.py           # GSU: Banner 9 + GSU's own codes
+    │       └── ksu.py           # KSU: Banner 9 + KSU's own codes
     └── db/
         ├── session.py           # engine + get_session()
         └── tables.py            # SQLAlchemy tables
@@ -89,6 +91,7 @@ Later, each as its own package when its stage starts: `enrichers/`, `resolution/
 
 - `PlatformAdapter` is an ABC, so a plugin writer who forgets a method gets an error when the class loads, not at runtime later. Methods: `list_terms`, `fetch_sections` (network, returns `RawSection`s), `normalize_sections` (offline, returns `Section`s).
 - `@register_platform("name")` registers an adapter; the school config's `platform:` picks it (`banner9.gsu`).
+- `load_plugins()` (in `adapters/__init__.py`, called once at CLI startup) imports every module under `adapters/`, so a new built-in adapter only needs its file. Outside plugins declare their module in the `registerhelper.adapters` entry point group in their own `pyproject.toml`; a broken plugin is logged and skipped, a broken built-in fails loudly.
 - **Banner-wide vs school-specific.** `banner9.py` only holds what is the same at every Banner 9 school: the JSON shapes, HHMM times, weekday booleans, "(View Only)" on closed terms, the session flow (`/term/search`, `resetDataForm`, pages of 500). Every code a school defines itself (attribute codes, instructional methods, meeting types, schedule types, campus names) goes in a `BannerCodes` model that the school subclass sets (`gsu.py`). Behavior that differs per school is a method override, not a code table. Never hardcode a school's codes in `banner9.py`.
 - Banner's raw shapes are private pydantic models inside the adapter (`extra="ignore"`, `alias_generator=to_camel`), so nothing outside the adapter knows Banner's format.
 - The audit adapter (degree audit) is a separate adapter type, later: different system, needs the user's login, local only.
