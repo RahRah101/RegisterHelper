@@ -64,6 +64,7 @@ class Section(BaseModel):
     section_id: str  # for example with Banner it's CRN
     course: CourseRef
     section_number: str
+    attribute_codes: set[str]  # raw school codes (like requirement areas etc...)
     credits: float  # some schools use decimal points in their credit hours as crazy as that sounds.
     # TODO: Decimal point credits might cause issues with CP-SAT later. We will probably need to scale by 100 or sumting
     campus: str

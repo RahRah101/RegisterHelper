@@ -29,10 +29,30 @@ from registerhelper.models import (
 log = logging.getLogger(__name__)
 
 
+class BannerCodes(BaseModel):
+    """A school's own Banner codes. Everything here is school-defined."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    modality_attributes: dict[str, Modality] = {}
+    method_modality: dict[str, Modality] = {}
+    online_methods: frozenset[str] = frozenset()
+    tag_attributes: dict[str, str] = {}
+    campus_tags: dict[str, frozenset[str]] = {}
+    individualized_schedule_types: frozenset[str] = frozenset()
+    individualized_attributes: frozenset[str] = frozenset()
+    individualized_campuses: frozenset[str] = frozenset()
+    class_meeting_types: frozenset[str] = frozenset({"CLAS"})
+    date_format: str = "%m/%d/%Y"
+
+
 @register_platform("banner9")
 class Banner9Adapter(PlatformAdapter):
     """Generic Banner 9. Works for any Banner school, but without a school
-    subclass, modality comes out UNKNOWN and attributes stay raw ("attr:xxx")."""
+    subclass, modality comes out UNKNOWN and there are no normalized tags
+    (raw attribute codes are still kept in attribute_codes)."""
+
+    codes: ClassVar[BannerCodes] = BannerCodes()
 
     def __init__(self, base_url: str, delay: float = 1.0) -> None:
         super().__init__(base_url)
@@ -156,6 +176,13 @@ class Banner9Adapter(PlatformAdapter):
         return sections
 
     # --- school-specific: override in the school's subclass -----------------
+    # campus description -> normalized tags (e.g. "perimeter", "online")
+    campus_tags: ClassVar[dict[str, frozenset[str]]] = {}
+    # a section matching ANY of these three gets the "individualized" tag
+    # (thesis, internships, directed study...: not regular scheduled classes)
+    individualized_schedule_types: ClassVar[frozenset[str]] = frozenset()
+    individualized_attributes: ClassVar[frozenset[str]] = frozenset()
+    individualized_campuses: ClassVar[frozenset[str]] = frozenset()
 
     # section attribute code -> modality
     modality_attributes: ClassVar[dict[str, Modality]] = {}
@@ -164,7 +191,7 @@ class Banner9Adapter(PlatformAdapter):
     # instructional method codes meaning "online"; sync vs async is decided
     # by whether the meetings have fixed times
     online_methods: ClassVar[frozenset[str]] = frozenset()
-    # section attribute code -> normalized tag (unmapped codes become "attr:<code>")
+    # section attribute code -> normalized tag (raw codes are kept in attribute_codes)
     tag_attributes: ClassVar[dict[str, str]] = {}
     # meeting type codes that are regular class meetings (others, like final
     # exams, are skipped so they don't create fake conflicts). "CLAS" is the
@@ -192,21 +219,28 @@ class Banner9Adapter(PlatformAdapter):
         if b.cross_list and b.cross_list_available is not None:
             seats = min(seats, b.cross_list_available)
 
+        campus = html.unescape(b.campus_description).strip()
+        tags = {self.tag_attributes[c] for c in codes if c in self.tag_attributes}
+        tags |= self.campus_tags.get(campus, frozenset())
+        if (
+            b.schedule_type_description in self.individualized_schedule_types
+            or campus in self.individualized_campuses
+            or codes & self.individualized_attributes
+        ):
+            tags.add("individualized")
+
         return Section(
             term=b.term,
             section_id=b.course_reference_number,
             course=CourseRef(subject=b.subject, number=b.course_number),
             section_number=b.sequence_number,
             credits=credits,
-            campus=html.unescape(b.campus_description).strip(),
+            campus=campus,
+            tags=tags,
+            attribute_codes=codes,
             modality=self._modality(codes, b.instructional_method, meetings),
             seats=seats,
             link_group=b.link_identifier,
-            tags={
-                self.tag_attributes.get(c, f"attr:{c.lower()}")
-                for c in codes
-                if c not in self.modality_attributes
-            },
             instructors=[
                 InstructorRef(external_id=f.banner_id, name=_clean_name(f.display_name))
                 for f in b.faculty
@@ -374,6 +408,7 @@ class _BannerSection(BaseModel):
     faculty: list[_BannerFaculty] = []
     meetings_faculty: list[_BannerMeeting] = []
     section_attributes: list[_BannerAttribute] = []
+    schedule_type_description: str | None = None
 
 
 # Parsing: raw Banner JSON -> domain layer models. Offline, runs on samples/.
