@@ -34,15 +34,27 @@ class BannerCodes(BaseModel):
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
+    # section attribute code -> modality
     modality_attributes: dict[str, Modality] = {}
+    # instructional method code -> modality
     method_modality: dict[str, Modality] = {}
+    # instructional method codes meaning "online"; sync vs async is decided
+    # by whether the meetings have fixed times
     online_methods: frozenset[str] = frozenset()
+    # section attribute code -> normalized tag (raw codes are kept in attribute_codes)
     tag_attributes: dict[str, str] = {}
+    # campus description -> normalized tags (e.g. "perimeter", "online")
     campus_tags: dict[str, frozenset[str]] = {}
+    # a section matching ANY of these three gets the "individualized" tag
+    # (thesis, internships, directed study...: not regular scheduled classes)
     individualized_schedule_types: frozenset[str] = frozenset()
     individualized_attributes: frozenset[str] = frozenset()
     individualized_campuses: frozenset[str] = frozenset()
+    # meeting type codes that are regular class meetings (others, like final
+    # exams, are skipped so they don't create fake conflicts). "CLAS" is the
+    # code at GSU and Northeastern, but schools can define their own.
     class_meeting_types: frozenset[str] = frozenset({"CLAS"})
+    # US Banner installs use MM/DD/YYYY (GSU, Northeastern); others may not
     date_format: str = "%m/%d/%Y"
 
 
@@ -175,41 +187,16 @@ class Banner9Adapter(PlatformAdapter):
                 )
         return sections
 
-    # --- school-specific: override in the school's subclass -----------------
-    # campus description -> normalized tags (e.g. "perimeter", "online")
-    campus_tags: ClassVar[dict[str, frozenset[str]]] = {}
-    # a section matching ANY of these three gets the "individualized" tag
-    # (thesis, internships, directed study...: not regular scheduled classes)
-    individualized_schedule_types: ClassVar[frozenset[str]] = frozenset()
-    individualized_attributes: ClassVar[frozenset[str]] = frozenset()
-    individualized_campuses: ClassVar[frozenset[str]] = frozenset()
-
-    # section attribute code -> modality
-    modality_attributes: ClassVar[dict[str, Modality]] = {}
-    # instructional method code -> modality
-    method_modality: ClassVar[dict[str, Modality]] = {}
-    # instructional method codes meaning "online"; sync vs async is decided
-    # by whether the meetings have fixed times
-    online_methods: ClassVar[frozenset[str]] = frozenset()
-    # section attribute code -> normalized tag (raw codes are kept in attribute_codes)
-    tag_attributes: ClassVar[dict[str, str]] = {}
-    # meeting type codes that are regular class meetings (others, like final
-    # exams, are skipped so they don't create fake conflicts). "CLAS" is the
-    # code at GSU and Northeastern, but schools can define their own.
-    class_meeting_types: ClassVar[frozenset[str]] = frozenset({"CLAS"})
-    # US Banner installs use MM/DD/YYYY (GSU, Northeastern); others may not
-    date_format: ClassVar[str] = "%m/%d/%Y"
-
-    # --- parsing that uses the school-specific codes above ------------------
+    # --- parsing that uses the school-specific codes in self.codes -----------
 
     def _parse_section(self, b: _BannerSection) -> Section:
         meetings = [
             self._parse_meeting(m.meeting_time)
             for m in b.meetings_faculty
             if m.meeting_time.meeting_type is None
-            or m.meeting_time.meeting_type in self.class_meeting_types
+            or m.meeting_time.meeting_type in self.codes.class_meeting_types
         ]
-        codes = {a.code.strip() for a in b.section_attributes}
+        attr_codes = {a.code.strip() for a in b.section_attributes}
 
         credits = b.credit_hours if b.credit_hours is not None else b.credit_hour_low
         if credits is None:
@@ -220,12 +207,16 @@ class Banner9Adapter(PlatformAdapter):
             seats = min(seats, b.cross_list_available)
 
         campus = html.unescape(b.campus_description).strip()
-        tags = {self.tag_attributes[c] for c in codes if c in self.tag_attributes}
-        tags |= self.campus_tags.get(campus, frozenset())
+        tags = {
+            self.codes.tag_attributes[c]
+            for c in attr_codes
+            if c in self.codes.tag_attributes
+        }
+        tags |= self.codes.campus_tags.get(campus, frozenset())
         if (
-            b.schedule_type_description in self.individualized_schedule_types
-            or campus in self.individualized_campuses
-            or codes & self.individualized_attributes
+            b.schedule_type_description in self.codes.individualized_schedule_types
+            or campus in self.codes.individualized_campuses
+            or attr_codes & self.codes.individualized_attributes
         ):
             tags.add("individualized")
 
@@ -237,8 +228,8 @@ class Banner9Adapter(PlatformAdapter):
             credits=credits,
             campus=campus,
             tags=tags,
-            attribute_codes=codes,
-            modality=self._modality(codes, b.instructional_method, meetings),
+            attribute_codes=attr_codes,
+            modality=self._modality(attr_codes, b.instructional_method, meetings),
             seats=seats,
             link_group=b.link_identifier,
             instructors=[
@@ -257,8 +248,8 @@ class Banner9Adapter(PlatformAdapter):
             days={day for field, day in _DAYS if getattr(m, field)},
             start=_parse_time(m.begin_time),
             end=_parse_time(m.end_time),
-            start_date=datetime.strptime(m.start_date, self.date_format).date(),
-            end_date=datetime.strptime(m.end_date, self.date_format).date(),
+            start_date=datetime.strptime(m.start_date, self.codes.date_format).date(),
+            end_date=datetime.strptime(m.end_date, self.codes.date_format).date(),
             location=location,
         )
 
@@ -266,7 +257,9 @@ class Banner9Adapter(PlatformAdapter):
         self, codes: set[str], method: str | None, meetings: list[Meeting]
     ) -> Modality:
         found = {
-            self.modality_attributes[c] for c in codes if c in self.modality_attributes
+            self.codes.modality_attributes[c]
+            for c in codes
+            if c in self.codes.modality_attributes
         }
         if len(found) == 1:
             return found.pop()
@@ -274,9 +267,9 @@ class Banner9Adapter(PlatformAdapter):
             return Modality.UNKNOWN  # conflicting attributes... FLAG
 
         if method is not None:
-            if method in self.method_modality:
-                return self.method_modality[method]
-            if method in self.online_methods:
+            if method in self.codes.method_modality:
+                return self.codes.method_modality[method]
+            if method in self.codes.online_methods:
                 has_times = any(m.start is not None for m in meetings)
                 return Modality.ONLINE_SYNC if has_times else Modality.ONLINE_ASYNC
         return Modality.UNKNOWN

@@ -1,4 +1,5 @@
 school: gsu
-platform: banner9
+platform: banner9.gsu
 base_url: https://registration.gosolar.gsu.edu/StudentRegistrationSsb/ssb
+timezone: America/New_York
 auth: none
