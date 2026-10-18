@@ -226,12 +226,13 @@ class Banner9Adapter(PlatformAdapter):
     # --- parsing that uses the school-specific codes in self.codes -----------
 
     def _parse_section(self, b: _BannerSection) -> Section:
-        meetings = [
-            self._parse_meeting(m.meeting_time)
+        class_mts = [
+            m.meeting_time
             for m in b.meetings_faculty
             if m.meeting_time.meeting_type is None
             or m.meeting_time.meeting_type in self.codes.class_meeting_types
         ]
+        meetings = [self._parse_meeting(m) for m in class_mts]
         attr_codes = {a.code.strip() for a in b.section_attributes or []}
 
         credits = b.credit_hours if b.credit_hours is not None else b.credit_hour_low
@@ -249,11 +250,7 @@ class Banner9Adapter(PlatformAdapter):
             if c in self.codes.tag_attributes
         }
         tags |= self.codes.campus_tags.get(campus, frozenset())
-        if (
-            b.schedule_type_description in self.codes.individualized_schedule_types
-            or campus in self.codes.individualized_campuses
-            or attr_codes & self.codes.individualized_attributes
-        ):
+        if self._is_individualized(b, campus, attr_codes):
             tags.add("individualized")
 
         return Section(
@@ -265,7 +262,7 @@ class Banner9Adapter(PlatformAdapter):
             campus=campus,
             tags=tags,
             attribute_codes=attr_codes,
-            modality=self._modality(attr_codes, b.instructional_method, meetings),
+            modality=self._modality(attr_codes, b.instructional_method, class_mts),
             seats=seats,
             link_group=b.link_identifier,
             instructors=[
@@ -289,9 +286,21 @@ class Banner9Adapter(PlatformAdapter):
             location=location,
         )
 
+    def _is_individualized(
+        self, b: _BannerSection, campus: str, attr_codes: set[str]
+    ) -> bool:
+        """Thesis, internships, directed study...: not regular scheduled classes.
+        Schools whose codes don't say it all extend this (see ksu.py)."""
+        return bool(
+            b.schedule_type_description in self.codes.individualized_schedule_types
+            or campus in self.codes.individualized_campuses
+            or attr_codes & self.codes.individualized_attributes
+        )
+
     def _modality(
-        self, codes: set[str], method: str | None, meetings: list[Meeting]
+        self, codes: set[str], method: str | None, mts: list[_BannerMeetingTime]
     ) -> Modality:
+        """Attributes, then method, then the meetings themselves."""
         found = {
             self.codes.modality_attributes[c]
             for c in codes
@@ -299,16 +308,15 @@ class Banner9Adapter(PlatformAdapter):
         }
         if len(found) == 1:
             return found.pop()
-        if len(found) > 1:
-            return Modality.UNKNOWN  # conflicting attributes... FLAG
+        # conflicting attributes (GSU: HYB + LF2F) fall through to the method
 
         if method is not None:
             if method in self.codes.method_modality:
                 return self.codes.method_modality[method]
             if method in self.codes.online_methods:
-                has_times = any(m.start is not None for m in meetings)
+                has_times = any(m.begin_time for m in mts)
                 return Modality.ONLINE_SYNC if has_times else Modality.ONLINE_ASYNC
-        return Modality.UNKNOWN
+        return _modality_from_meetings(mts)
 
 
 def parse_terms(raw: list[JSON]) -> list[Term]:
@@ -361,6 +369,23 @@ def _clean_name(name: str) -> str:
     name = re.sub(r"\s*\(.*?\)", "", name)  # drop "(preferred name)"
     name = re.sub(r"\s+\.$", "", name)  # drop trailing " ." (keeps "D.")
     return re.sub(r"\s+", " ", name).strip()
+
+
+def _modality_from_meetings(mts: list[_BannerMeetingTime]) -> Modality:
+    # last resort when the school's codes decide nothing (no method, or one like
+    # GSU's NT that means different things). Building "ONLINE" is Banner's own.
+    online = any((m.building or "").upper() == "ONLINE" for m in mts)
+    physical = any(m.building and m.building.upper() != "ONLINE" for m in mts)
+    timed = any(m.begin_time for m in mts)
+    if physical and online:
+        return Modality.HYBRID
+    if timed and physical:
+        return Modality.IN_PERSON
+    if timed:
+        return Modality.ONLINE_SYNC
+    if online:
+        return Modality.ONLINE_ASYNC
+    return Modality.UNKNOWN  # no times, no building: can't tell async from TBA
 
 
 def _validation_reason(e: ValidationError) -> str:
@@ -442,6 +467,7 @@ class _BannerSection(BaseModel):
     course_reference_number: str
     subject: str
     course_number: str
+    course_title: str = ""
     sequence_number: str
     campus_description: str
     credit_hours: float | None = None

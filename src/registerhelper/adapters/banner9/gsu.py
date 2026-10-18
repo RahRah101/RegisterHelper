@@ -22,6 +22,8 @@ class GsuAdapter(Banner9Adapter):
             "T": Modality.IN_PERSON,
             "NULL": Modality.IN_PERSON,  # "No tech used in deliver instru"
             # "NT": TODO verify that, found scraping
+            # NT is mixed in 202701 (ONLINE-only, in-person and both): left to the
+            # meeting fallback in banner9.py
         },
         online_methods=frozenset({"E", "F"}),
         # HC "Honors College"; CRLS "Learning Support" (search_math.json);
@@ -50,6 +52,13 @@ class GsuAdapter(Banner9Adapter):
             "Online": frozenset({"online"}),
             "Online - Atl US (Mand. Fees)": frozenset({"online"}),
             "Online - Atl GR (Mand. Fees)": frozenset({"online", "graduate"}),
+            "GA OnMyLine": frozenset({"online"}),  # USG online program, all F
+            # mostly 8xxx business grad courses at an off-site location, with times
+            "Off-Campus with Mand. Fees": frozenset({"off_campus"}),
+            "Foreign Campus": frozenset({"study_abroad"}),
+            # USG program, GFA subject
+            "Georgia Film Academy": frozenset({"film_academy"}),
+            # unmapped: FinTech Academy (all F)
         },
         # thesis, internships, directed study...: not regular scheduled classes
         individualized_schedule_types=frozenset(
