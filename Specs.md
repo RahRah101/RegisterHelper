@@ -2,13 +2,33 @@
 
 ```mermaid
 flowchart LR
-  A[School Config] --> B[Platform Adapter] --> DB[(School Info DB)]
-  E[Enrichers] --> G[Deterministic Enricher: Grade dist, RMP raw ratings]
-  E ---> NLE[Natural language Enricher: RMP comments, Reddit posts, etc...]
+  subgraph School["School systems"]
+    CS[Class search + catalog: Banner, PeopleSoft, Workday]
+    DW[Degree audit: DegreeWorks, transcript]
+  end
+
+  subgraph Adapters
+    PA[Platform Adapter: public, read-only]
+    AA[Audit Adapter: your login or manual paste, local only]
+  end
+
+  CFG[School Config YAML] -. configures .-> PA
+  CFG -. configures .-> AA
+
+  subgraph Enrichers
+    G["Deterministic: grade dist, RMP raw ratings"]
+    NLE["Natural language: RMP comments, Reddit posts, etc."] --> F[LLM Feature Extraction]
+  end
+
+  CS --> PA --> DB[(School Info DB)]
   G --> DB
-  NLE --> F[LLM Feature Extraction] --> DB
-  P[Audit + NL Prefs] --> L[LLM Parsing] --> U[User Confirms] --> R[Requirements/Preferences]
-  DB --> S[Solver CP-SAT]
-  R --> S --> K[LLM Rerank] --> O[Schedules + CRNs]
+  F --> DB
+  DW --> AA -->|user confirms| H[Completed Courses]
+  NL[Natural Language Prefs] --> PC[LLM Preference Compiler] -->|user confirms| W[Constraints + Weights]
+
+  DB --> S["Solver (CP-SAT)"]
+  H --> S
+  W --> S
+  S --> K[LLM Rerank] --> O[Schedules + CRNs]
 ```
 
