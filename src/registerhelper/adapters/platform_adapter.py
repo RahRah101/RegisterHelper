@@ -6,6 +6,9 @@ from registerhelper.models import RawSection, Section, Term
 
 
 class PlatformAdapter(ABC):
+    def __init__(self, base_url: str) -> None:
+        self.base_url = base_url.rstrip("/")
+
     @abstractmethod
     def list_terms(self) -> list[Term]: ...
     @abstractmethod

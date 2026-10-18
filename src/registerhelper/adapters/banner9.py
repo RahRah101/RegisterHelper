@@ -2,10 +2,14 @@ from __future__ import annotations
 
 import html
 import logging
+import random
 import re
+import string
 from datetime import datetime, time
+from time import sleep
 from typing import ClassVar, override
 
+import httpx
 from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 from pydantic.alias_generators import to_camel
 
@@ -30,13 +34,111 @@ class Banner9Adapter(PlatformAdapter):
     """Generic Banner 9. Works for any Banner school, but without a school
     subclass, modality comes out UNKNOWN and attributes stay raw ("attr:xxx")."""
 
+    def __init__(self, base_url: str, delay: float = 1.0) -> None:
+        super().__init__(base_url)
+        self.delay = delay  # TODO makes this configurable instead of forcing a delay.
+
     @override
     def list_terms(self) -> list[Term]:
-        raise NotImplementedError  # TODO network: classSearch/getTerms -> parse_terms
+        with self._client() as c:
+            raw = self._get(
+                c, "/classSearch/getTerms", {"searchTerm": "", "offset": 1, "max": 100}
+            )
+        if not isinstance(raw, list):
+            raise BannerError("getTerms: expected a list")
+        return parse_terms(raw)
 
     @override
     def fetch_sections(self, term: str) -> list[RawSection]:
-        raise NotImplementedError  # TODO network: term/search + paginated searchResults
+        sid = _unique_session_id()
+        with self._client() as c:
+            self._declare_term(c, term, sid)
+            sections = self._search_all(c, term, sid)
+            if sections:
+                log.info("whole term in one search: %d sections", len(sections))
+                return sections
+            # this Banner won't do an empty search so go subject by subject as a fallback
+            log.info("empty search returned nothing, fetching per subject")
+            for subject in self._subjects(c, term):
+                self._post(
+                    c, "/classSearch/resetDataForm"
+                )  # Banner remembers the last search
+                sections.extend(self._search_all(c, term, sid, subject))
+        return sections
+
+    def _declare_term(self, c: httpx.Client, term: str, sid: str) -> None:
+        # search is blocked until the session declares which term it's browsing
+        self._post(
+            c,
+            "/term/search",
+            params={"mode": "search"},
+            data={
+                "term": term,
+                "studyPath": "",
+                "studyPathText": "",
+                "startDatepicker": "",
+                "endDatepicker": "",
+                "uniqueSessionId": sid,
+            },
+        )
+
+    def _subjects(self, c: httpx.Client, term: str) -> list[str]:
+        raw = self._get(
+            c,
+            "/classSearch/get_subject",
+            {"searchTerm": "", "term": term, "offset": 1, "max": 1000},
+        )
+        return [s.code for s in _lookup_adapter.validate_python(raw)]
+
+    def _search_all(
+        self, c: httpx.Client, term: str, sid: str, subject: str | None = None
+    ) -> list[RawSection]:
+        out: list[RawSection] = []
+        offset = 0
+        while True:
+            params: dict[str, str | int] = {
+                "txt_term": term,
+                "uniqueSessionId": sid,
+                "pageOffset": offset,
+                "pageMaxSize": _PAGE_SIZE,
+                "sortColumn": "subjectDescription",
+                "sortDirection": "asc",
+            }
+            if subject is not None:
+                params["txt_subject"] = subject
+            page = _BannerSearchPage.model_validate(
+                self._get(c, "/searchResults/searchResults", params)
+            )
+            if not page.success:
+                raise BannerError(
+                    "searchResults: success=false (term not declared for this session?)"
+                )
+            batch = page.data or []
+            out.extend(batch)
+            offset += _PAGE_SIZE
+            if not batch or offset >= page.total_count:
+                return out
+
+    def _client(self) -> httpx.Client:
+        return httpx.Client(
+            timeout=30.0, headers={"User-Agent": "RegisterHelper (course planner)"}
+        )
+
+    def _get(self, c: httpx.Client, path: str, params: dict[str, str | int]) -> JSON:
+        sleep(self.delay)
+        return _json_or_raise(c.get(self.base_url + path, params=params), path)
+
+    def _post(
+        self,
+        c: httpx.Client,
+        path: str,
+        params: dict[str, str] | None = None,
+        data: dict[str, str] | None = None,
+    ) -> None:
+        sleep(self.delay)
+        r = c.post(self.base_url + path, params=params, data=data)
+        if not r.is_success:
+            raise BannerError(f"{path}: HTTP {r.status_code}")
 
     @override
     def normalize_sections(self, raw: list[RawSection]) -> list[Section]:
@@ -158,6 +260,32 @@ def parse_terms(raw: list[JSON]) -> list[Term]:
     ]
 
 
+class BannerError(Exception):
+    """Unfortunately, Banner answered with something other than what we expected...."""
+
+
+_PAGE_SIZE = 500  # Banner's maximum page size
+
+
+def _unique_session_id() -> str:
+    prefix = "".join(random.choices(string.ascii_lowercase + string.digits, k=5))
+    return f"{prefix}{int(datetime.now().timestamp() * 1000)}"
+
+
+def _json_or_raise(r: httpx.Response, path: str) -> JSON:
+    if r.is_redirect:
+        raise BannerError(
+            f"{path}: redirected to {r.headers.get('location')} (login wall?)"
+        )
+    if not r.is_success:
+        raise BannerError(f"{path}: HTTP {r.status_code}")
+    if "json" not in r.headers.get("content-type", ""):
+        raise BannerError(
+            f"{path}: expected JSON, got {r.headers.get('content-type')} (error page?)"
+        )
+    return r.json()  # pyright: ignore[reportAny]
+
+
 def _parse_time(value: str | None) -> time | None:
     if not value:
         return None
@@ -167,13 +295,20 @@ def _parse_time(value: str | None) -> time | None:
 def _clean_name(name: str) -> str:
     # "La Corte, Julie (Julie Carmine)  ." -> "La Corte, Julie"
     name = html.unescape(name)
-    name = re.sub(r"\s+\.$", "", name)  # drop "(preferred name)"
-    name = re.sub(r"[\s.]+$", "", name)  # drop trailing " ."
+    name = re.sub(r"\s*\(.*?\)", "", name)  # drop "(preferred name)"
+    name = re.sub(r"\s+\.$", "", name)  # drop trailing " ." (keeps "D.")
     return re.sub(r"\s+", " ", name).strip()
 
 
 # Classes representing Banner's raw shape.
 _BANNER = ConfigDict(extra="ignore", alias_generator=to_camel, populate_by_name=True)
+
+
+class _BannerSearchPage(BaseModel):
+    model_config = _BANNER
+    success: bool
+    total_count: int = 0
+    data: list[RawSection] | None = None
 
 
 class _BannerTerm(BaseModel):
@@ -255,3 +390,4 @@ _DAYS: tuple[tuple[str, Weekday], ...] = (
 )
 
 _terms_adapter = TypeAdapter(list[_BannerTerm])
+_lookup_adapter = TypeAdapter(list[_BannerTerm])
