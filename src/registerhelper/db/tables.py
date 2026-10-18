@@ -86,6 +86,8 @@ class SectionRow(Base):
     seats: Mapped[int] = mapped_column()
     link_group: Mapped[str | None] = mapped_column(String(32))
     tags: Mapped[list[str]] = mapped_column(JSON, default=list)
+    # raw school codes (GSU: degree-requirement areas), for the requirements engine
+    attribute_codes: Mapped[list[str]] = mapped_column(JSON, default=list)
 
     meetings: Mapped[list["MeetingRow"]] = relationship(
         back_populates="section", cascade="all, delete-orphan"
