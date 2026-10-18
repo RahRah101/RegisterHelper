@@ -1,0 +1,30 @@
+[
+  {
+    "code": "E",
+    "description": "-DO NOT USE"
+  },
+  {
+    "code": "F",
+    "description": "Fully at a Distance"
+  },
+  {
+    "code": "H3",
+    "description": "Hybrid - 33 percent Online"
+  },
+  {
+    "code": "H",
+    "description": "Hybrid - 50 percent Online"
+  },
+  {
+    "code": "H6",
+    "description": "Hybrid - 66 percent Online"
+  },
+  {
+    "code": "P",
+    "description": "Predominately at a Distance"
+  },
+  {
+    "code": "L",
+    "description": "Traditional F2F"
+  }
+]

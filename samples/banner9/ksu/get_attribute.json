@@ -1,0 +1,42 @@
+[
+  {
+    "code": "CBEX",
+    "description": "Credit by Exam"
+  },
+  {
+    "code": "CBDE",
+    "description": "Departmental Exam"
+  },
+  {
+    "code": "ZLCM",
+    "description": "LowCost $40 or undr req txtbks"
+  },
+  {
+    "code": "ZNCM",
+    "description": "NoCost $0 req&#39;d textbooks"
+  },
+  {
+    "code": "CBPF",
+    "description": "Performance"
+  },
+  {
+    "code": "CBPR",
+    "description": "Portfolio Review"
+  },
+  {
+    "code": "PFL",
+    "description": "President&#39;s Focused Learner"
+  },
+  {
+    "code": "PLA",
+    "description": "Prior Learning Assess Eligible"
+  },
+  {
+    "code": "CBPC",
+    "description": "Professional Cert."
+  },
+  {
+    "code": "STEM",
+    "description": "STEM Weighted Course"
+  }
+]

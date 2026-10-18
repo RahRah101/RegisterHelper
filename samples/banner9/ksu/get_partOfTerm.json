@@ -1,0 +1,46 @@
+[
+  {
+    "code": "G02",
+    "description": "eCore - Eight Week Session I 01/11/2027 - 03/06/2027"
+  },
+  {
+    "code": "G03",
+    "description": "eCore - Eight Week Session II 03/08/2027 - 05/01/2027"
+  },
+  {
+    "code": "G01",
+    "description": "eCore - Full Term 01/11/2027 - 04/29/2027"
+  },
+  {
+    "code": "E01",
+    "description": "eMajor 16 Week Session 01/11/2027 - 04/29/2027"
+  },
+  {
+    "code": "E02",
+    "description": "eMajor 8 Week Session 1 01/11/2027 - 03/06/2027"
+  },
+  {
+    "code": "E03",
+    "description": "eMajor 8 Week Session 2 03/08/2027 - 05/01/2027"
+  },
+  {
+    "code": "1",
+    "description": "Full Term 01/11/2027 - 05/03/2027"
+  },
+  {
+    "code": "10",
+    "description": "Learning Communities 01/11/2027 - 05/03/2027"
+  },
+  {
+    "code": "7A",
+    "description": "Seven Week Session I 01/11/2027 - 02/26/2027"
+  },
+  {
+    "code": "7B",
+    "description": "Seven Week Session II 03/08/2027 - 04/22/2027"
+  },
+  {
+    "code": "7",
+    "description": "Study Abroad 01/11/2027 - 05/03/2027"
+  }
+]

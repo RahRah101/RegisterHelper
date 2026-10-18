@@ -1,0 +1,38 @@
+[
+  {
+    "code": "AF",
+    "description": "Academic Affairs"
+  },
+  {
+    "code": "ED",
+    "description": "Bagwell College of Education"
+  },
+  {
+    "code": "BS",
+    "description": "Coles College of Business"
+  },
+  {
+    "code": "AC",
+    "description": "College of Arch and Cnst Mgt"
+  },
+  {
+    "code": "CS",
+    "description": "College of Comp &amp; Soft Eng"
+  },
+  {
+    "code": "ET",
+    "description": "College of Eng and Eng Tech"
+  },
+  {
+    "code": "HH",
+    "description": "College of Health &amp; Hum Ser"
+  },
+  {
+    "code": "AA",
+    "description": "Geer College of the Arts"
+  },
+  {
+    "code": "HS",
+    "description": "Radow College of Hum &amp; Soc Sci"
+  }
+]

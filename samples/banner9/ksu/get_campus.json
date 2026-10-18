@@ -1,0 +1,46 @@
+[
+  {
+    "code": "SSP",
+    "description": "City Springs Complex"
+  },
+  {
+    "code": "EC",
+    "description": "eCampus"
+  },
+  {
+    "code": "GML",
+    "description": "eCore"
+  },
+  {
+    "code": "EAB",
+    "description": "Education Study Abroad"
+  },
+  {
+    "code": "FTA",
+    "description": "FinTech Academy"
+  },
+  {
+    "code": "G",
+    "description": "Galleria Center"
+  },
+  {
+    "code": "A",
+    "description": "Kennesaw Campus"
+  },
+  {
+    "code": "C",
+    "description": "KSU Center"
+  },
+  {
+    "code": "O",
+    "description": "KSU Online"
+  },
+  {
+    "code": "M",
+    "description": "Marietta Campus"
+  },
+  {
+    "code": "P",
+    "description": "Paulding/Dallas Center"
+  }
+]

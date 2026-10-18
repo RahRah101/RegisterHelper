@@ -1,0 +1,694 @@
+[
+  {
+    "code": "AAE",
+    "description": "AAE-Aerospace Engineering"
+  },
+  {
+    "code": "ACCT",
+    "description": "ACCT-Accounting"
+  },
+  {
+    "code": "AI",
+    "description": "AI-Artificial Intelligence"
+  },
+  {
+    "code": "AIAE",
+    "description": "AIAE-Academy Inclusive Learn"
+  },
+  {
+    "code": "AMST",
+    "description": "AMST-American Studies"
+  },
+  {
+    "code": "ANIM",
+    "description": "ANIM-Animation"
+  },
+  {
+    "code": "ANTH",
+    "description": "ANTH-Anthropology"
+  },
+  {
+    "code": "ARAB",
+    "description": "ARAB-Arabic"
+  },
+  {
+    "code": "ARCH",
+    "description": "ARCH-Architecture"
+  },
+  {
+    "code": "ARED",
+    "description": "ARED-Art Education"
+  },
+  {
+    "code": "ARH",
+    "description": "ARH-Art History"
+  },
+  {
+    "code": "ART",
+    "description": "ART-Art"
+  },
+  {
+    "code": "ARTS",
+    "description": "ARTS-Arts"
+  },
+  {
+    "code": "ASIA",
+    "description": "ASIA-Asian Studies"
+  },
+  {
+    "code": "ASL",
+    "description": "ASL-American Sign Language"
+  },
+  {
+    "code": "BIOL",
+    "description": "BIOL-Biology"
+  },
+  {
+    "code": "BLAW",
+    "description": "BLAW-Business Law"
+  },
+  {
+    "code": "BLCK",
+    "description": "BLCK-Black Studies"
+  },
+  {
+    "code": "BRM",
+    "description": "BRM-Bus Research Mgmt"
+  },
+  {
+    "code": "BUSA",
+    "description": "BUSA-Business Administration"
+  },
+  {
+    "code": "CE",
+    "description": "CE-Civil Engineering"
+  },
+  {
+    "code": "CGDD",
+    "description": "CGDD-Computer Game Dsgn&amp;Develm"
+  },
+  {
+    "code": "CHEM",
+    "description": "CHEM-Chemistry"
+  },
+  {
+    "code": "CHIN",
+    "description": "CHIN-Chinese"
+  },
+  {
+    "code": "CM",
+    "description": "CM-Construction Management"
+  },
+  {
+    "code": "COM",
+    "description": "COM-Communication"
+  },
+  {
+    "code": "COMM",
+    "description": "COMM-Communication"
+  },
+  {
+    "code": "COOP",
+    "description": "COOP-Cooperative Work Assignmt"
+  },
+  {
+    "code": "CPE",
+    "description": "CPE - Computer Engineering"
+  },
+  {
+    "code": "CRJU",
+    "description": "CRJU-Criminal Justice"
+  },
+  {
+    "code": "CS",
+    "description": "CS-Computer Science"
+  },
+  {
+    "code": "CSCH",
+    "description": "CSCH-Coles Scholar"
+  },
+  {
+    "code": "CSCI",
+    "description": "CSCI-Computing Science"
+  },
+  {
+    "code": "CSE",
+    "description": "CSE-Computer Science Engr"
+  },
+  {
+    "code": "CSED",
+    "description": "CSED-Computer Science Endo"
+  },
+  {
+    "code": "CYBR",
+    "description": "CYBR-Cybersecurity"
+  },
+  {
+    "code": "DANC",
+    "description": "DANC-Dance"
+  },
+  {
+    "code": "DATA",
+    "description": "DATA-Analytics &amp; Data Sci"
+  },
+  {
+    "code": "DS",
+    "description": "DS-Data Science"
+  },
+  {
+    "code": "ECE",
+    "description": "ECE-Early Childhood Education"
+  },
+  {
+    "code": "ECET",
+    "description": "ECET-Electrical&amp;Cmptr Eng Tech"
+  },
+  {
+    "code": "ECON",
+    "description": "ECON-Economics"
+  },
+  {
+    "code": "EDAD",
+    "description": "EDAD-Adolescent Education"
+  },
+  {
+    "code": "EDCI",
+    "description": "EDCI-Curriculum &amp; Instruction"
+  },
+  {
+    "code": "EDCO",
+    "description": "EDCO-Coaching Endorsement"
+  },
+  {
+    "code": "EDG",
+    "description": "EDG-Engineering Dsgn Graphics"
+  },
+  {
+    "code": "EDL",
+    "description": "EDL-Educational Leadership"
+  },
+  {
+    "code": "EDMG",
+    "description": "EDMG-Middle Grades Education"
+  },
+  {
+    "code": "EDRD",
+    "description": "EDRD-Education-Reading"
+  },
+  {
+    "code": "EDRS",
+    "description": "EDRS-Education-Research"
+  },
+  {
+    "code": "EDSM",
+    "description": "EDSM-Secondary &amp; Middle School"
+  },
+  {
+    "code": "EDUC",
+    "description": "EDUC-Education"
+  },
+  {
+    "code": "EE",
+    "description": "EE-Electrical Engineering"
+  },
+  {
+    "code": "EM",
+    "description": "EM-Engineering Management"
+  },
+  {
+    "code": "ENED",
+    "description": "ENED-English Education"
+  },
+  {
+    "code": "ENGL",
+    "description": "ENGL-English"
+  },
+  {
+    "code": "ENGR",
+    "description": "ENGR-Engineering"
+  },
+  {
+    "code": "ENGT",
+    "description": "ENGT-Engineering Technology"
+  },
+  {
+    "code": "ENTR",
+    "description": "ENTR-Entrepreneurship"
+  },
+  {
+    "code": "ENVS",
+    "description": "ENVS-Environmental Science"
+  },
+  {
+    "code": "ES",
+    "description": "ES-Exercise Science"
+  },
+  {
+    "code": "EURO",
+    "description": "EURO-European Union"
+  },
+  {
+    "code": "FILM",
+    "description": "FILM-Film"
+  },
+  {
+    "code": "FIN",
+    "description": "FIN-Finance"
+  },
+  {
+    "code": "FIS",
+    "description": "FIS - Financial Info Systems"
+  },
+  {
+    "code": "FREN",
+    "description": "FREN-French"
+  },
+  {
+    "code": "FTA",
+    "description": "FTA-FinTech Academy"
+  },
+  {
+    "code": "GBA",
+    "description": "GBA-Graduate Business Admin"
+  },
+  {
+    "code": "GEOG",
+    "description": "GEOG-Geography"
+  },
+  {
+    "code": "GEOL",
+    "description": "GEOL-Geology"
+  },
+  {
+    "code": "GFA",
+    "description": "GFA-Georgia Film Academy"
+  },
+  {
+    "code": "GIS",
+    "description": "GIS-Geographic Information Sys"
+  },
+  {
+    "code": "GRMN",
+    "description": "GRMN-German"
+  },
+  {
+    "code": "GWST",
+    "description": "GWST-Gender &amp; Women&#39;s Studies"
+  },
+  {
+    "code": "HEA",
+    "description": "HEA-Higher Educ Administration"
+  },
+  {
+    "code": "HEBR",
+    "description": "HEBR-Hebrew"
+  },
+  {
+    "code": "HESA",
+    "description": "HESA-Higher Ed Stud Affairs"
+  },
+  {
+    "code": "HHS",
+    "description": "HHS-Health &amp; Human Services"
+  },
+  {
+    "code": "HIED",
+    "description": "HIED-History Education"
+  },
+  {
+    "code": "HIST",
+    "description": "HIST-History"
+  },
+  {
+    "code": "HMGT",
+    "description": "HMGT-Hospitality Management"
+  },
+  {
+    "code": "HMI",
+    "description": "HMI-Healthcare Mgmt &amp; Informat"
+  },
+  {
+    "code": "HON",
+    "description": "HON-Honors Program"
+  },
+  {
+    "code": "HPAL",
+    "description": "HPAL-Health &amp; Phys Activ Lead"
+  },
+  {
+    "code": "HPE",
+    "description": "HPE-Health Promotion &amp; PhysEdu"
+  },
+  {
+    "code": "HS",
+    "description": "HS-Human Services"
+  },
+  {
+    "code": "HUED",
+    "description": "HUED-Humanities Education"
+  },
+  {
+    "code": "IAD",
+    "description": "IAD-Interactive Design"
+  },
+  {
+    "code": "IEP",
+    "description": "IEP-Intensive English Program"
+  },
+  {
+    "code": "IET",
+    "description": "IET-Industrial EngineeringTech"
+  },
+  {
+    "code": "IHS",
+    "description": "IHS-Integrated Health Science"
+  },
+  {
+    "code": "INCM",
+    "description": "INCM-Intn&#39;l Conflict Mgmt"
+  },
+  {
+    "code": "INED",
+    "description": "INED-Inclusive Education"
+  },
+  {
+    "code": "INS",
+    "description": "INS-Insurance"
+  },
+  {
+    "code": "IPE",
+    "description": "IPE-Interprofessional Educ"
+  },
+  {
+    "code": "IPM",
+    "description": "IPM-International Policy Mgt."
+  },
+  {
+    "code": "IS",
+    "description": "IS-Information Systems"
+  },
+  {
+    "code": "ISCI",
+    "description": "ISCI-Integrated Science"
+  },
+  {
+    "code": "ISD",
+    "description": "ISD-Interdisciplinary Studies"
+  },
+  {
+    "code": "ISYE",
+    "description": "ISYE-Industrial &amp; System Engr"
+  },
+  {
+    "code": "IT",
+    "description": "IT-Information Technology"
+  },
+  {
+    "code": "ITAL",
+    "description": "ITAL-Italian"
+  },
+  {
+    "code": "ITEC",
+    "description": "ITEC-Instructional Technology"
+  },
+  {
+    "code": "JAPN",
+    "description": "JAPN-Japanese"
+  },
+  {
+    "code": "JOUR",
+    "description": "JOUR - Journalism"
+  },
+  {
+    "code": "KOR",
+    "description": "KOR-Korean"
+  },
+  {
+    "code": "LALS",
+    "description": "LALS-Latin American Studies"
+  },
+  {
+    "code": "LATN",
+    "description": "LATN-Latin"
+  },
+  {
+    "code": "LDRS",
+    "description": "LDRS-Foundations of Leadership"
+  },
+  {
+    "code": "LDT",
+    "description": "LDT-Learning Design &amp; Tech"
+  },
+  {
+    "code": "LING",
+    "description": "LING-Linguistics"
+  },
+  {
+    "code": "MAED",
+    "description": "MAED-Math Education"
+  },
+  {
+    "code": "MATH",
+    "description": "MATH-Mathematics"
+  },
+  {
+    "code": "ME",
+    "description": "ME-Mechanical Engineering"
+  },
+  {
+    "code": "MEBU",
+    "description": "MEBU-Music &amp; Entertainment Bus"
+  },
+  {
+    "code": "MENT",
+    "description": "MENT-Media&amp;Entertainment Study"
+  },
+  {
+    "code": "MET",
+    "description": "MET-Mechanical Engineering Tec"
+  },
+  {
+    "code": "MGT",
+    "description": "MGT-Management"
+  },
+  {
+    "code": "MHIS",
+    "description": "MHIS-Music History"
+  },
+  {
+    "code": "MILS",
+    "description": "MILS-Military Science"
+  },
+  {
+    "code": "MKTG",
+    "description": "MKTG-Marketing"
+  },
+  {
+    "code": "MSCM",
+    "description": "MSCM-Conflict Management"
+  },
+  {
+    "code": "MTRE",
+    "description": "MTRE-Mechatronics Engineering"
+  },
+  {
+    "code": "MUAP",
+    "description": "MUAP-Applied Music"
+  },
+  {
+    "code": "MUED",
+    "description": "MUED-Music Education"
+  },
+  {
+    "code": "MUEN",
+    "description": "MUEN-Music Ensemble"
+  },
+  {
+    "code": "MUSC",
+    "description": "MUSC-Music Appreciation"
+  },
+  {
+    "code": "MUSE",
+    "description": "MUSE-Museology/Museum Studies"
+  },
+  {
+    "code": "MUSI",
+    "description": "MUSI-Music"
+  },
+  {
+    "code": "MUTC",
+    "description": "MUTC-Music Theory &amp; Comp"
+  },
+  {
+    "code": "MUTH",
+    "description": "Music Therapy"
+  },
+  {
+    "code": "NURS",
+    "description": "NURS-Nursing"
+  },
+  {
+    "code": "OP",
+    "description": "OP-Orthotics and Prosthetics"
+  },
+  {
+    "code": "ORGC",
+    "description": "ORGC-Org&amp;Professional Comm"
+  },
+  {
+    "code": "ORNT",
+    "description": "ORNT-Orientation Placeholder"
+  },
+  {
+    "code": "PAD",
+    "description": "PAD-Public Administration"
+  },
+  {
+    "code": "PAX",
+    "description": "PAX-Peace Studies"
+  },
+  {
+    "code": "PH",
+    "description": "PH-Public Health"
+  },
+  {
+    "code": "PHIL",
+    "description": "PHIL-Philosophy"
+  },
+  {
+    "code": "PHYS",
+    "description": "PHYS-Physics"
+  },
+  {
+    "code": "POLS",
+    "description": "POLS-Political Science"
+  },
+  {
+    "code": "PORT",
+    "description": "PORT-Portuguese"
+  },
+  {
+    "code": "PR",
+    "description": "PR-Public Relations"
+  },
+  {
+    "code": "PRWR",
+    "description": "PRWR-Professional Writing"
+  },
+  {
+    "code": "PSYC",
+    "description": "PSYC-Psychology"
+  },
+  {
+    "code": "RE",
+    "description": "RE-Real Estate"
+  },
+  {
+    "code": "RELS",
+    "description": "RELS-Religion"
+  },
+  {
+    "code": "RES",
+    "description": "RES-Research"
+  },
+  {
+    "code": "RUSS",
+    "description": "RUSS-Russian"
+  },
+  {
+    "code": "SCED",
+    "description": "SCED-Science Education"
+  },
+  {
+    "code": "SCI",
+    "description": "SCI-Science"
+  },
+  {
+    "code": "SCM",
+    "description": "SCM-Science Culture and Math"
+  },
+  {
+    "code": "SETS",
+    "description": "SETS-Spec Ed Transition Servs"
+  },
+  {
+    "code": "SM",
+    "description": "SM - Sport Management"
+  },
+  {
+    "code": "SOCI",
+    "description": "SOCI-Sociology"
+  },
+  {
+    "code": "SPAN",
+    "description": "SPAN-Spanish"
+  },
+  {
+    "code": "STAT",
+    "description": "STAT-Statistics"
+  },
+  {
+    "code": "STS",
+    "description": "STS-Social Issues"
+  },
+  {
+    "code": "STVW",
+    "description": "STVW-Screen TV Writing"
+  },
+  {
+    "code": "SURV",
+    "description": "SURV-Surveying"
+  },
+  {
+    "code": "SW",
+    "description": "SW-Social Work"
+  },
+  {
+    "code": "SWE",
+    "description": "SWE-Software Engineering"
+  },
+  {
+    "code": "SYE",
+    "description": "SYE-Systems Engineering"
+  },
+  {
+    "code": "TCID",
+    "description": "TCID-Tech Com &amp;InteractiveDsgn"
+  },
+  {
+    "code": "TCOM",
+    "description": "TCOM-Technical Communication"
+  },
+  {
+    "code": "THEA",
+    "description": "THEA-Theatre Appreciation"
+  },
+  {
+    "code": "TLED",
+    "description": "TLED-Teacher Leadership"
+  },
+  {
+    "code": "TPS",
+    "description": "TPS-Theatre &amp; Performance Stud"
+  },
+  {
+    "code": "WELL",
+    "description": "WELL-Wellness"
+  },
+  {
+    "code": "WLC",
+    "description": "WLC-World Languages &amp; Culture"
+  },
+  {
+    "code": "WLED",
+    "description": "WLED-World Language Education"
+  },
+  {
+    "code": "WMBA",
+    "description": "WMBA-Web Master of Bus Adm"
+  },
+  {
+    "code": "WRIT",
+    "description": "WRIT-Writing"
+  }
+]
