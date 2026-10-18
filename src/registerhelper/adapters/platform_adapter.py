@@ -1,22 +1,26 @@
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from typing import TypeVar
+from typing import Any, TypeVar
 
-from registerhelper.models import Term
+from registerhelper.models import Section, Term
+
+type RawSection = dict[str, Any]
 
 
 class PlatformAdapter(ABC):
     @abstractmethod
     def list_terms(self) -> list[Term]: ...
     @abstractmethod
-    def fetch_sections(self, term: str) -> list[dict]: ...
+    def fetch_sections(self, term: str) -> list[RawSection]: ...
+    @abstractmethod
+    def normalize(self, raw: list[RawSection]) -> list[Section]: ...
 
 
 A = TypeVar("A", bound=PlatformAdapter)
 _PLATFORMS: dict[str, type[PlatformAdapter]] = {}
 
 
-def register_platform(name: str) -> Callable[[type[A]], [type[A]]]:
+def register_platform(name: str) -> Callable[[type[A]], type[A]]:
     def deco(cls: type[A]) -> type[A]:
         if name in _PLATFORMS:
             raise ValueError(f"platform '{name}' already registered")
