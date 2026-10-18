@@ -196,7 +196,7 @@ class Banner9Adapter(PlatformAdapter):
             if m.meeting_time.meeting_type is None
             or m.meeting_time.meeting_type in self.codes.class_meeting_types
         ]
-        attr_codes = {a.code.strip() for a in b.section_attributes}
+        attr_codes = {a.code.strip() for a in b.section_attributes or []}
 
         credits = b.credit_hours if b.credit_hours is not None else b.credit_hour_low
         if credits is None:
@@ -400,7 +400,7 @@ class _BannerSection(BaseModel):
     instructional_method: str | None = None
     faculty: list[_BannerFaculty] = []
     meetings_faculty: list[_BannerMeeting] = []
-    section_attributes: list[_BannerAttribute] = []
+    section_attributes: list[_BannerAttribute] | None = None  # null at KSU, [] at GSU
     schedule_type_description: str | None = None
 
 
