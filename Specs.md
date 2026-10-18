@@ -8,12 +8,13 @@ flowchart LR
   end
 
   subgraph Adapters
-    PA[Platform Adapter: public, read-only]
+    PA[Platform Adapter: read-only]
     AA[Audit Adapter: your login or manual paste, local only]
   end
 
   CFG[School Config YAML] -. configures .-> PA
   CFG -. configures .-> AA
+  CFG -. configures .-> RE
 
   subgraph Enrichers
     G["Deterministic: grade dist, RMP raw ratings"]
@@ -30,5 +31,8 @@ flowchart LR
   H --> S
   W --> S
   S --> K[LLM Rerank] --> O[Schedules + CRNs]
+
+  O -->|you paste CRNs| REG[School Registration]
+  O -. opt-in .-> RE[Registration Executor] --> REG
 ```
 
