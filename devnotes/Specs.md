@@ -61,11 +61,14 @@ RegisterHelper/
 ├── alembic.ini
 ├── migrations/                  # Alembic: the only thing that changes the schema
 ├── school_configs/
-│   └── gsu.yaml                 # base_url, platform: banner9.gsu, ...
+│   ├── gsu.yaml                 # base_url, platform: banner9.gsu, ...
+│   └── ksu.yaml                 # platform: banner9.ksu
 ├── samples/
-│   └── banner9/gsu/             # captured Banner responses, for offline dev
+│   ├── banner9/gsu/             # captured Banner responses, for offline dev
+│   └── banner9/ksu/
 ├── devnotes/
-│   └── Specs.md
+│   ├── Specs.md
+│   └── TODO.md
 ├── data/                        # gitignored: raw snapshots + registerhelper.db
 └── src/registerhelper/
     ├── cli.py                   # `rh`: terms, fetch, normalize
@@ -127,16 +130,91 @@ An instructor appears under different names in each source ("La Corte, Julie" in
 2. **LLM for the ambiguous remainder only**, with context (department, courses taught). Output: a match and a confidence.
 3. **Every decision is stored** as a match row the user can override (user-created data, protected by migrations). Each pair is decided once; later runs read the stored row, so matching is reproducible.
 
+## Categories and scoring (later)
+
+Preferences and enrichment meet in one catalog of categories. The catalog is the same for every school and doesn't depend on any one source.
+
+- **Categories:**
+  - schedule shape: earliest start, latest end, days on campus, gaps, back-to-back classes at different campuses, credit total
+  - section facts: modality, campus
+  - instructor style: quality, difficulty, homework load, grading clarity, participation, group projects, reading load, caring... RMP's tag list is the template for these, not their source.
+  - course outcomes: A rate, DFW rate
+- **Evidence, not sources:** an enricher contributes evidence to categories. RMP tags, RMP comments, Reddit posts and grade data are separate enrichers feeding the same categories. Comment text counts as evidence even when the reviewer picked no tag. Each value carries how many data points support it, so a category backed by two comments counts less than one backed by fifty.
+- **Normalization:** each category has a fixed rule in the catalog that maps its raw value to an integer score from 0 to 100 per schedule, where 100 is best for the requested direction. "Avoid" uses 100 − score. Section-level categories are averaged over the schedule, weighted by credits. Ranges are fixed in the catalog, not taken from the term's data, so a schedule's score doesn't change with the snapshot.
+
+  | Category | Raw unit | Rule |
+  |---|---|---|
+  | gaps | minutes per week | 0 min → 100, 600+ min → 0, linear |
+  | early_start | earliest start time | 10:00 or later → 100, 8:00 or earlier → 0 |
+  | days_on_campus | 1–5 days | 1 day → 100, 5 days → 0 |
+  | prof_quality | evidence from any enricher | worst → 0, best → 100, credit-weighted average |
+
+- **Strengths:** a soft preference is low, medium or high. Code maps them to weights 1, 3 and 9. Hard is a constraint, not a weight. The same strength gives the same weight in every category, which only works because every category is on the same 0–100 scale. The objective is `Σ weight × score`.
+- **Example:** "I really don't want early classes, I'd kind of like Fridays off, and absolutely nothing after 6pm" compiles to:
+  - `early_start`, avoid, high (9)
+  - `day_off(Fri)`, prefer, low (1)
+  - `latest_end ≤ 18:00`, hard
+
+  The same text always gives the same weights.
+- **The catalog changes only in code:** a new category comes with its normalization rule and an enricher that fills it. Categories are never created at runtime.
+- **Lexicographic priorities (potential feature):** the user ranks preferences instead of giving strengths. The solver optimizes the first, then the next within a tolerance of the previous optimum.
+
 ## Preference compiler (later)
 
 Free-form input, typed output, frozen after user confirmation.
 
-1. **Typed constraints (pydantic):** time windows, days off, prefer/avoid instructor, campus, modality, max gap between classes, credit range, compactness.
+1. **Typed constraints (pydantic):** time windows, days off, prefer/avoid instructor, campus, modality, max gap between classes, credit range, compactness. Each soft constraint targets a category in the catalog. The compiler only activates categories the request actually matches; it never creates one.
 2. **One escape hatch:** a filter on known section fields (`location contains "Langdale"`). Validated like the others, never arbitrary code.
-3. **Hard or soft:** each constraint is hard, or soft with a weight. The user can change either before confirming.
-4. **No approximations:** a request the types can't express is reported as such. Taste ("a chill professor") goes to the rerank stage as a soft criterion.
-5. **Compile once, freeze:** text → constraints is the only nondeterministic step. Its confirmed output is stored, and the solver always reads the stored version, so the same confirmed preferences always give the same schedules. Changing the wording triggers a recompile.
+3. **Hard or soft:** each constraint is hard, or soft with a strength (low, medium, high). The user can change either before confirming.
+4. **No approximations:** a request the types can't express is reported as such. Taste ("a chill professor") goes to the rerank stage as a soft criterion. Unmatched requests are logged; the log shows which categories the catalog is missing.
+5. **Compile once, freeze:** text → constraints is the only nondeterministic step. Hosted LLMs aren't deterministic even at temperature 0, so the stored output is what makes results reproducible. Its confirmed output is stored, and the solver always reads the stored version, so the same confirmed preferences always give the same schedules. Changing the wording triggers a recompile.
 6. **Eval set:** phrases with their expected constraints, run whenever the prompt or model changes.
+
+## Solver (later)
+
+- CP-SAT, integers only: credits are scaled, and category scores are already integers from 0 to 100.
+- Deterministic for a given snapshot and confirmed preferences: a fixed seed, deterministic search settings, and a final tie-break on CRN order. Without these, several workers or a time limit can return a different schedule among equally good ones.
+
+## LLM layer (later)
+
+`llm/`, built like the platform adapters: tasks with typed schemas, providers behind an interface.
+
+| Task | Volume | Errors caught by | Default model |
+|---|---|---|---|
+| Preference compiler | once per user per term, then frozen | the user, at confirmation | large general LLM, schema-constrained output |
+| Comment feature extraction | thousands to hundreds of thousands of comments, offline batches | nobody (goes straight to the DB) | zero-shot model to start, then a model fine-tuned on hand labels; picked by the eval set |
+| Rerank / explain | once per solve | the user reads it | hosted LLM |
+| Instructor resolution leftovers | small | stored match rows, user can override | hosted LLM |
+
+- **Each task has:**
+  - a pydantic input and output schema
+  - a prompt version
+  - a model id
+  - a stored result, keyed by (task, prompt version, model, input hash)
+- **Providers:** a hosted API, a local open-weights model, or a local encoder classifier. Switching provider is a config change, and the task's eval set decides whether a switch is allowed.
+- **Validation behind every task:**
+  - output is constrained to catalog ids
+  - fields are checked against the DB: professor names, course codes, times
+  - extraction quotes the comment text that supports each label, and code checks that the quote is in the comment
+  - the compiler's output is confirmed by the user
+
+  A weaker model then shows up as missed preferences or evidence, not invented ones.
+- **Compiler model:** the language is open and combined ("only MWF if it's online"), the volume is tiny, and no training data exists. A large general model is the default. Small local models are optional behind the same interface if they pass the eval set. Extractive models (NuExtract) only output text that appears in the input, so they need deterministic code to normalize their spans ("before 10" → `early_start ≥ 10:00`).
+- **Extraction model:** aspect-category sentiment analysis. The categories are fixed by the catalog, and each comment gets a polarity per category it mentions ("homework load: negative"), plus the quoted text that supports it. Existing models trained on professor reviews only cover overall sentiment, and none uses these categories.
+  - **Zero-shot is the cold start only.** The end state is a model fine-tuned on the hand-labeled comments: a DeBERTa/ModernBERT pair classifier, (sentence, category) → none / low / high. SetFitABSA extracts aspect terms, not fixed categories, so it doesn't fit directly. With moderate labeled data, fine-tuned encoders match or beat zero-shot LLMs at a fraction of the cost.
+  - **Candidates, compared on the eval set:**
+    - a hosted large LLM: the quality ceiling, and the labeler for the training set
+    - Qwen3-Reranker or Qwen3-4B/8B, run locally: the strongest zero-shot families in an independent benchmark (BTZSC)
+    - GLiNER2: classification and span extraction in one call (label plus evidence), about 205M parameters, CPU
+    - GLiClass: fast zero-shot classification over runtime labels; its benchmarks are reported only by its authors
+
+    NLI cross-encoders are left out: they plateau as the backbone grows.
+  - **No published benchmark covers this task.** Available comparisons are single-label, so only the eval set decides.
+  - **Negation and sarcasm** are the usual failure ("the homework is light lol, NOT"). The eval set includes them.
+  - **Volume doesn't decide the model.** Each comment is extracted once and keyed by its hash, so a cheap hosted model, or a local 8B model on a GPU, is feasible for every comment at a few schools. On CPU only, an 8B model is limited to the eval set.
+- **Eval sets:**
+  - about 200 hand-labeled comments, including negative cases ("not much homework")
+  - compiler phrases with their expected constraints
 
 ## Stack
 
